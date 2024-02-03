@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                 MainButton(
                     ontap: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.of(context).pushNamed(AppRoutes.homeRoute);
+                        Navigator.of(context).pushNamed(AppRoutes.navRoute);
                         //todo login
                       }
                     },
