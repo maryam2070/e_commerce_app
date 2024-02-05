@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../utilities/errors/exceptions.dart';
+import '../../../core/utilities/errors/exceptions.dart';
+
 
 abstract class AuthDataSource {
   User? get currentUser;

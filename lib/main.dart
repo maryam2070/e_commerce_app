@@ -1,9 +1,9 @@
-import 'package:e_commerce_app/utilities/router.dart';
-import 'package:e_commerce_app/utilities/routes.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-Future<void> main() async{
+import 'core/utilities/router.dart';
+import 'core/utilities/routes.dart';
+
+Future<void> main() async {
   //todo
   //WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
@@ -31,8 +31,9 @@ class MyApp extends StatelessWidget {
             fillColor: Colors.white,
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                borderSide: BorderSide(color: Colors.white,)
-            ),
+                borderSide: BorderSide(
+                  color: Colors.white,
+                )),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
                 borderSide: BorderSide(

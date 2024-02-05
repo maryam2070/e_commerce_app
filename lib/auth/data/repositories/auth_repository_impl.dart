@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce_app/auth/data/data_sources/auth_data_source.dart';
-import 'package:e_commerce_app/utilities/errors/failures.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../utilities/errors/exceptions.dart';
+import '../../../core/utilities/errors/exceptions.dart';
+import '../../../core/utilities/errors/failures.dart';
 import '../../domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

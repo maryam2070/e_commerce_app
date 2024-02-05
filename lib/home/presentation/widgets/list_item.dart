@@ -64,9 +64,11 @@ class ListItem extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[500],
                         decoration: TextDecoration.lineThrough)),
-                TextSpan(
-                    text: " ${product.price * (product.discountValue) / 100}\$",
-                    style: Theme.of(context).textTheme.bodyMedium)
+                if (product.discountValue != null)//todo
+                  TextSpan(
+                      text:
+                          " ${product.price * (product.discountValue!) / 100}\$",
+                      style: Theme.of(context).textTheme.bodyMedium)
               ]))
             ])));
   }

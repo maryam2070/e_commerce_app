@@ -10,3 +10,10 @@ class FirebaseAuthFailure extends Failure{
 
   FirebaseAuthFailure({required this.message}) : super(message: '');
 }
+
+class FirebaseFirestoreFailure extends Failure{
+  @override
+  String message;
+
+  FirebaseFirestoreFailure({required this.message}) : super(message: '');
+}

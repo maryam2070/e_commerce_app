@@ -3,10 +3,10 @@ import 'package:e_commerce_app/auth/domain/usecases/login_use_case.dart';
 import 'package:e_commerce_app/auth/presentation/login_controller.dart';
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
 import 'package:e_commerce_app/auth/presentation/widgets/social_account_row.dart';
-import 'package:e_commerce_app/utilities/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/utilities/routes.dart';
 import '../../data/data_sources/auth_data_source.dart';
 
 class Login extends StatelessWidget {

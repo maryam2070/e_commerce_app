@@ -1,7 +1,8 @@
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
 import 'package:e_commerce_app/auth/presentation/widgets/social_account_row.dart';
-import 'package:e_commerce_app/utilities/routes.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/utilities/routes.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
