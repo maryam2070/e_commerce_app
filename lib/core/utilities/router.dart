@@ -3,8 +3,10 @@ import 'package:e_commerce_app/auth/presentation/pages/sign_up_page.dart';
 import 'package:e_commerce_app/auth/presentation/pages/landing_page.dart';
 import 'package:e_commerce_app/core/utilities/routes.dart';
 import 'package:e_commerce_app/home/presentation/pages/home_page.dart';
+import 'package:e_commerce_app/home/presentation/pages/product_details_page.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../home/domain/models/product.dart';
 import '../../shared/presentation/widgets/persistent_bottom_nav_bar.dart';
 
 
@@ -23,6 +25,13 @@ Route<dynamic> onGenerate(RouteSettings st) {
 
     case AppRoutes.navRoute:
       return CupertinoPageRoute(builder: (_) => const BottomNavigationBar(), settings: st);
+
+    case AppRoutes.productDetailsRoute:
+      {
+        final product=st.arguments as Product;
+        return CupertinoPageRoute(
+            builder: (_) => ProductDetails(product: product), settings: st);
+      }
     default:
       return CupertinoPageRoute(
           builder: (_) => const LandingPage(), settings: st);

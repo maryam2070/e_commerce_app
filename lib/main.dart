@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme:
             ColorScheme.fromSeed(seedColor: Theme.of(context).primaryColor),
+        iconTheme: const IconThemeData(color: Colors.black),
         scaffoldBackgroundColor: const Color(0xfff9f9f9),
         //primarySwatch:  MaterialColor(Colo,0xffDB3022, as Map<int, Color>),
         primaryColor: const Color(0xffDB3022),
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.red))),
       ),
       onGenerateRoute: onGenerate,
-      initialRoute: AppRoutes.loginRoute,
+      initialRoute: AppRoutes.homeRoute,
     );
   }
 }

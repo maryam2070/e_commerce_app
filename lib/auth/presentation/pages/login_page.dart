@@ -54,102 +54,95 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Form(
                   key: _formKey,
-                  child: Stack(children: [
-                    if(model.isError)
-                      //todo handel error in view
-                      //todo make sure to set is error to false when dismiss
-                      Text(model.errorMessage)
-                    ,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 60,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 60,
+                      ),
+                      Text(
+                        "Login",
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      const SizedBox(
+                        height: 60,
+                      ),
+                      TextFormField(
+                          onChanged: model.updateEmail,
+                          controller: _emailController,
+                          focusNode: _emailFocusNode,
+                          onEditingComplete: () {
+                            FocusScope.of(context)
+                                .requestFocus(_passwordFocusNode);
+                          },
+                          textInputAction: TextInputAction.next,
+                          validator: (val) =>
+                              val!.isEmpty ? 'Please enter your email' : null,
+                          decoration: const InputDecoration(
+                              labelText: "Email",
+                              hintText: 'Enter your email')),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                          onChanged: model.updatePassword,
+                          focusNode: _passwordFocusNode,
+                          controller: _passwordController,
+                          validator: (val) => val!.isEmpty
+                              ? 'Please enter your password'
+                              : null,
+                          decoration: const InputDecoration(
+                              labelText: "Password",
+                              hintText: 'Enter your password')),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          child: const Text("Forgot your password?"),
+                          onTap: () {
+                            //todo navigate to forgot password
+                          },
                         ),
-                        Text(
-                          "Login",
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                        const SizedBox(
-                          height: 60,
-                        ),
-                        TextFormField(
-                            onChanged: model.updateEmail,
-                            controller: _emailController,
-                            focusNode: _emailFocusNode,
-                            onEditingComplete: () {
-                              FocusScope.of(context)
-                                  .requestFocus(_passwordFocusNode);
-                            },
-                            textInputAction: TextInputAction.next,
-                            validator: (val) =>
-                                val!.isEmpty ? 'Please enter your email' : null,
-                            decoration: const InputDecoration(
-                                labelText: "Email",
-                                hintText: 'Enter your email')),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                            onChanged: model.updatePassword,
-                            focusNode: _passwordFocusNode,
-                            controller: _passwordController,
-                            validator: (val) => val!.isEmpty
-                                ? 'Please enter your password'
-                                : null,
-                            decoration: const InputDecoration(
-                                labelText: "Password",
-                                hintText: 'Enter your password')),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            child: const Text("Forgot your password?"),
-                            onTap: () {
-                              //todo navigate to forgot password
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        MainButton(
-                            ontap: () {
-                              if (_formKey.currentState!.validate()) {
-                                debugPrint(model.email);
-                                debugPrint(model.password);
-                                //todo login
-                                //model.submit();
-                                if (model.success) {
-                                  Navigator.of(context)
-                                      .pushNamed(AppRoutes.navRoute);
-                                }
-
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      MainButton(
+                          ontap: () {
+                            if (_formKey.currentState!.validate()) {
+                              debugPrint(model.email);
+                              debugPrint(model.password);
+                              //todo login
+                              //model.submit();
+                              if (model.success) {
+                                Navigator.of(context)
+                                    .pushNamed(AppRoutes.navRoute);
                               }
-                            },
-                            text: "Login"),
-                        const SizedBox(
-                          height: 80,
+
+                            }
+                          },
+                          text: "Login"),
+                      const SizedBox(
+                        height: 80,
+                      ),
+                      const SocialAccountsRow(title: "Or login with"),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: InkWell(
+                          child: const Text("New? Sign Up "),
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(AppRoutes.signupRoute);
+                          },
                         ),
-                        const SocialAccountsRow(title: "Or login with"),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: InkWell(
-                            child: const Text("New? Sign Up "),
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(AppRoutes.signupRoute);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ]),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

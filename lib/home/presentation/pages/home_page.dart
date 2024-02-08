@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
                     title: "Sale", description: "Super Summer Sale", onTap: () {})),
             SizedBox(height: 0.8),
             SizedBox(
-              height: 330,
+              height: 350,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: dummyProducts.map((e) => Padding(
@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                     title: "New", description: "Super New Products", onTap: () {})),
             SizedBox(height: 0.8),
             SizedBox(
-              height: 330,
+              height: 350,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: dummyProducts.map((e) => Padding(

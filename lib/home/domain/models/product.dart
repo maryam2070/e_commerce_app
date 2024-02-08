@@ -7,7 +7,7 @@ class Product {
   final String imgUrl;
   final int? discountValue;
   final String category;
-  final int? rate;
+  final double? rate;
 
   Product({
     required this.id,
@@ -39,7 +39,7 @@ class Product {
       imgUrl: map['imgUrl'] as String,
       discountValue: map['discountValue'] as int,
       category: map['category'] as String,
-      rate: map['rate'] as int,
+      rate: map['rate'] as double,
     );
   }
 }
@@ -52,6 +52,7 @@ List<Product> dummyProducts = [
     imgUrl: Assets.tempProductAsset1,
     category: 'Clothes',
     discountValue: 20,
+    rate: 4
   ),
   Product(
     id: '1',
@@ -60,6 +61,7 @@ List<Product> dummyProducts = [
     imgUrl: Assets.tempProductAsset1,
     category: 'Clothes',
     discountValue: 20,
+      rate: 5
   ),
   Product(
     id: '1',
@@ -68,6 +70,7 @@ List<Product> dummyProducts = [
     imgUrl: Assets.tempProductAsset1,
     category: 'Clothes',
     discountValue: 20,
+      rate: 1.5
   ),
   Product(
     id: '1',
