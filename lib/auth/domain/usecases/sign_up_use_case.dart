@@ -9,7 +9,25 @@ class SignUpUseCase {
 
   SignUpUseCase({required this.repository});
 
-  Future<Either<Failure, User?>> call(String email, String password) async {
+  Future<Either<Failure, void>> call(
+      String email, String password, Map<String, dynamic> data) async {
+    Either<Failure, void>? response2 = null;
+
+    final response1 = await callAuth(email, password);
+
+    response1.fold((l) => Unit, (r) async {
+      response2 = await callAssignData(r!.uid, data);
+    });
+
+    return (response2 != null) ? response1.bind((a) => response2!) : response1;
+  }
+
+  Future<Either<Failure, void>> callAssignData(
+      String uid, Map<String, dynamic> data) async {
+    return await repository.assignUserData(uid, data);
+  }
+
+  Future<Either<Failure, User?>> callAuth(String email, String password) async {
     return await repository.signUpWithEmailAndPassword(email, password);
   }
 }

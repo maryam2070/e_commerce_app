@@ -18,7 +18,7 @@ packages:
     source: hosted
     version: "2.11.0"
   bloc:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: bloc
       sha256: "3820f15f502372d979121de1f6b97bfcf1630ebff8fe1d52fb2b0bfa49be5b49"
@@ -113,6 +113,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  firebase_app_check:
+    dependency: "direct main"
+    description:
+      name: firebase_app_check
+      sha256: "5a44dd8c7d99a0251c095e12f863ccb8a12ca4269601855e4a800997324210bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0+1"
+  firebase_app_check_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_app_check_platform_interface
+      sha256: d1e8aa11d5221823553e56efc5a713dc8ebebd47afea967bee486653d6fe1dfe
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0+1"
+  firebase_app_check_web:
+    dependency: transitive
+    description:
+      name: firebase_app_check_web
+      sha256: "0f60160a2ac3a5174802dd5df13415934e89551b8d5c78d390de65d8e0fa6222"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0+1"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -224,6 +248,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      sha256: dfdde255317af381bfc1c486ed968d5a43a2ded9c931e87cbecd88767d6a71c1
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.2.4"
   get_it:
     dependency: "direct main"
     description:

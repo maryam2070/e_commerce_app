@@ -4,4 +4,8 @@ class Assets{
   static const String tempProductAsset1 =
       'https://m.media-amazon.com/images/I/61-jBuhtgZL._UX569_.jpg';
 
+
+  /// Checkout Images
+  static const mastercardIcon =
+      'https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png';
 }

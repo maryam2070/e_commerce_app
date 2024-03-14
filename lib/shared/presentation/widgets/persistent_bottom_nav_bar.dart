@@ -1,8 +1,13 @@
 
+import 'package:e_commerce_app/home/presentation/pages/bag_page.dart';
 import 'package:e_commerce_app/home/presentation/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
+import '../../../home/presentation/pages/add_shipping_address.dart';
+import '../../../home/presentation/pages/check_out_page.dart';
+import '../../../home/presentation/pages/payment_methods_page.dart';
 
 class BottomNavigationBar extends StatefulWidget {
   const BottomNavigationBar({super.key});
@@ -14,8 +19,13 @@ class BottomNavigationBar extends StatefulWidget {
 class _BottomNavigationBarState extends State<BottomNavigationBar> {
   List<Widget> _buildScreens() {
     return [
+
       const HomePage(),
-      Container()
+      const BagPage(),
+       Container(),
+      Container(),
+      Container(),
+
     ];
   }
 
@@ -28,8 +38,26 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.settings),
-        title: ("Settings"),
+        icon: Icon(CupertinoIcons.bag),
+        title: ("Bag"),
+        activeColorPrimary: Theme.of(context).primaryColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(CupertinoIcons.cart),
+        title: ("Cart"),
+        activeColorPrimary: Theme.of(context).primaryColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(CupertinoIcons.heart),
+        title: ("Cart"),
+        activeColorPrimary: Theme.of(context).primaryColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(CupertinoIcons.person),
+        title: ("Cart"),
         activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

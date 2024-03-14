@@ -1,60 +1,55 @@
-import 'package:e_commerce_app/auth/data/repositories/auth_repository_impl.dart';
-import 'package:e_commerce_app/auth/domain/usecases/login_use_case.dart';
-import 'package:e_commerce_app/auth/presentation/login_controller.dart';
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
 import 'package:e_commerce_app/auth/presentation/widgets/social_account_row.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/utilities/routes.dart';
-import '../../data/data_sources/auth_data_source.dart';
+import '../controllers/auth_controller_bloc.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class LoginPage extends StatelessWidget {
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //todo injection
+    final _formKey = GlobalKey<FormState>();
+    final _emailController = TextEditingController();
+    final _passwordController = TextEditingController();
+    final _emailFocusNode = FocusNode();
+    final _passwordFocusNode = FocusNode();
 
-    return Provider<LoginUseCase>(
-      create: (_) => LoginUseCase(
-          repository: AuthRepositoryImpl(ds: AuthDataSourceImpl(null))),
-      child: const LoginPage(),
-    );
-  }
-}
+    _emailController.text = "maryamamr2070@gmail.com";
+    _passwordController.text = "123456789";
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _emailFocusNode = FocusNode();
-  final _passwordFocusNode = FocusNode();
-
-  //final emailController:Controller
-  @override
-  Widget build(BuildContext context) {
-    final login = Provider.of<LoginUseCase>(context);
-
-    return ChangeNotifierProvider<LoginController>(
-      create: (_) => LoginController(loginUseCase: login),
-      child: Consumer<LoginController>(
-        builder: (_, model, __) {
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: BlocBuilder<AuthControllerBloc, AuthControllerState>(
+        builder: (context, state) {
+          if (state is AuthControllerSuccess) {
+            Navigator.of(context).popAndPushNamed(AppRoutes.navRoute);
+          }
+          if (state is AuthControllerError) {
+            Fluttertoast.showToast(
+                msg: state.message,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Form(
+                key: _formKey,
+                child: Stack(alignment: Alignment.center, children: [
+                  (state is AuthControllerLoading)
+                      ? CircularProgressIndicator(
+                          color: Colors.redAccent,
+                        )
+                      : Container(),
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
@@ -68,7 +63,6 @@ class _LoginPageState extends State<LoginPage> {
                         height: 60,
                       ),
                       TextFormField(
-                          onChanged: model.updateEmail,
                           controller: _emailController,
                           focusNode: _emailFocusNode,
                           onEditingComplete: () {
@@ -85,7 +79,6 @@ class _LoginPageState extends State<LoginPage> {
                         height: 20,
                       ),
                       TextFormField(
-                          onChanged: model.updatePassword,
                           focusNode: _passwordFocusNode,
                           controller: _passwordController,
                           validator: (val) => val!.isEmpty
@@ -112,15 +105,10 @@ class _LoginPageState extends State<LoginPage> {
                       MainButton(
                           ontap: () {
                             if (_formKey.currentState!.validate()) {
-                              debugPrint(model.email);
-                              debugPrint(model.password);
-                              //todo login
-                              //model.submit();
-                              if (model.success) {
-                                Navigator.of(context)
-                                    .pushNamed(AppRoutes.navRoute);
-                              }
-
+                              BlocProvider.of<AuthControllerBloc>(context).add(
+                                  LoginEvent(
+                                      email: _emailController.text,
+                                      password: _passwordController.text));
                             }
                           },
                           text: "Login"),
@@ -142,8 +130,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ],
-                  ),
-                ),
+                  )
+                ]),
               ),
             ),
           );

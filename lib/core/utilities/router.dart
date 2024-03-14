@@ -14,7 +14,7 @@ Route<dynamic> onGenerate(RouteSettings st) {
   switch (st.name) {
     case AppRoutes.loginRoute:
       return CupertinoPageRoute(
-          builder: (_) => const Login(), settings: st);
+          builder: (_) =>  LoginPage(), settings: st);
 
     case AppRoutes.signupRoute:
       return CupertinoPageRoute(

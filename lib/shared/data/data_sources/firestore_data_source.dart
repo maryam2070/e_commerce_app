@@ -19,7 +19,7 @@ abstract class FirestoreDataSource {
 }
 
 class FirestoreDataSourceImpl implements FirestoreDataSource {
-  FirebaseFirestore firestore;
+  FirebaseFirestore? firestore;
 
   FirestoreDataSourceImpl({required this.firestore});
 
@@ -27,7 +27,7 @@ class FirestoreDataSourceImpl implements FirestoreDataSource {
   Future<bool> deleteData(String path) async {
     bool deleted = false;
     try {
-      await firestore.doc(path).delete().whenComplete(() => deleted = true);
+      await firestore!.doc(path).delete().whenComplete(() => deleted = true);
 
       return deleted;
     } catch (e) {
@@ -40,7 +40,7 @@ class FirestoreDataSourceImpl implements FirestoreDataSource {
       {required String path, required Map<String, dynamic> data}) async {
     bool uploaded = false;
     try {
-      await firestore.doc(path).set(data).whenComplete(() => uploaded = true);
+      await firestore!.doc(path).set(data).whenComplete(() => uploaded = true);
       return uploaded;
     } catch (e) {
       rethrow;
@@ -52,7 +52,7 @@ class FirestoreDataSourceImpl implements FirestoreDataSource {
       {required String path,
         required T Function(Map<String, dynamic>? data, String docId)
         builder}) async {
-    final snapshot = firestore.doc(path).snapshots();
+    final snapshot = firestore!.doc(path).snapshots();
     return snapshot.map((snapshot) => builder(snapshot.data(), snapshot.id));
   }
 
@@ -63,7 +63,7 @@ class FirestoreDataSourceImpl implements FirestoreDataSource {
     Query Function(Query query)? queryBuilder,
     int Function(T lhs, T rhs)? sort,
   }) {
-    Query query = firestore.collection(path);
+    Query query = firestore!.collection(path);
     if (queryBuilder != null) {
       query = queryBuilder(query);
     }
