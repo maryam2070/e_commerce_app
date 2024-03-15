@@ -45,4 +45,14 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(FirebaseAuthFailure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, User?>> signInGoogle()  async{
+    try {
+      final user=await ds.signInGoogle();
+      return Right(user);
+    } on AuthException catch (e) {
+      return Left(FirebaseAuthFailure(message: e.message));
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/auth/data/data_sources/auth_data_source.dart';
 import 'package:e_commerce_app/auth/data/repositories/auth_repository_impl.dart';
 import 'package:e_commerce_app/auth/domain/repositories/auth_repository.dart';
+import 'package:e_commerce_app/auth/domain/usecases/google_signin_use_case.dart';
 import 'package:e_commerce_app/auth/domain/usecases/login_use_case.dart';
 import 'package:e_commerce_app/auth/domain/usecases/sign_up_use_case.dart';
 import 'package:e_commerce_app/shared/data/data_sources/firestore_data_source.dart';
@@ -30,4 +31,7 @@ void authSetup() {
       SignUpUseCase(repository: getIt.get()));
   getIt.registerSingleton<LoginUseCase>(
       LoginUseCase(repository: getIt.get()));
+
+  getIt.registerSingleton<GoogleSignInUseCase>(
+      GoogleSignInUseCase(repository: getIt.get()));
 }

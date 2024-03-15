@@ -1,14 +1,26 @@
 import 'package:e_commerce_app/auth/presentation/controllers/auth_controller_bloc.dart';
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
-import 'package:e_commerce_app/auth/presentation/widgets/social_account_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/utilities/routes.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  bool _obscureText = true;
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +31,15 @@ class SignUpPage extends StatelessWidget {
     final _emailFocusNode = FocusNode();
     final _passwordFocusNode = FocusNode();
     final _nameFocusNode = FocusNode();
-    _nameController.text="maryam";
-    _emailController.text="maryamamr2070@gmail.com";
-    _passwordController.text="123456789";
+    _nameController.text = "maryam";
+    _emailController.text = "maryamamr2070@gmail.com";
+    _passwordController.text = "123456789";
     return BlocBuilder<AuthControllerBloc, AuthControllerState>(
       builder: (context, state) {
-        if(state is AuthControllerSuccess){
-          Navigator.of(context).popAndPushNamed(
-              AppRoutes.navRoute);
+        if (state is AuthControllerSuccess) {
+          Navigator.of(context).popAndPushNamed(AppRoutes.navRoute);
         }
-        if(state is AuthControllerError){
+        if (state is AuthControllerError) {
           Fluttertoast.showToast(
               msg: state.message,
               toastLength: Toast.LENGTH_SHORT,
@@ -36,16 +47,16 @@ class SignUpPage extends StatelessWidget {
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.red,
               textColor: Colors.white,
-              fontSize: 16.0
-          );
+              fontSize: 16.0);
         }
         return Stack(
           alignment: Alignment.center,
-          children:[
-            (state is AuthControllerLoading)?
-            CircularProgressIndicator(
-              color: Colors.redAccent,
-            ):Container(),
+          children: [
+            (state is AuthControllerLoading)
+                ? CircularProgressIndicator(
+                    color: Colors.redAccent,
+                  )
+                : Container(),
             Scaffold(
               resizeToAvoidBottomInset: false,
               body: SafeArea(
@@ -70,13 +81,15 @@ class SignUpPage extends StatelessWidget {
                             controller: _nameController,
                             focusNode: _nameFocusNode,
                             onEditingComplete: () {
-                              FocusScope.of(context).requestFocus(_emailFocusNode);
+                              FocusScope.of(context)
+                                  .requestFocus(_emailFocusNode);
                             },
                             textInputAction: TextInputAction.next,
                             validator: (val) =>
-                            val!.isEmpty ? 'Please enter your name' : null,
+                                val!.isEmpty ? 'Please enter your name' : null,
                             decoration: const InputDecoration(
-                                labelText: "Name", hintText: 'Enter your name')),
+                                labelText: "Name",
+                                hintText: 'Enter your name')),
                         Container(
                           decoration: BoxDecoration(),
                         ),
@@ -92,18 +105,31 @@ class SignUpPage extends StatelessWidget {
                             },
                             textInputAction: TextInputAction.next,
                             validator: (val) =>
-                            val!.isEmpty ? 'Please enter your email' : null,
+                                val!.isEmpty ? 'Please enter your email' : null,
                             decoration: const InputDecoration(
-                                labelText: "Email", hintText: 'Enter your email')),
+                                labelText: "Email",
+                                hintText: 'Enter your email')),
                         const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
                             focusNode: _passwordFocusNode,
                             controller: _passwordController,
-                            validator: (val) =>
-                            val!.isEmpty ? 'Please enter your password' : null,
-                            decoration: const InputDecoration(
+                            validator: (val) => val!.isEmpty
+                                ? 'Please enter your password'
+                                : null,
+                            obscureText: _obscureText,
+                            decoration: InputDecoration(
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    _toggle();
+                                  },
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(top: 15.0),
+                                      child: (_obscureText == true)
+                                          ? Icon(Icons.lock)
+                                          : Icon(Icons.lock_open_sharp)),
+                                ),
                                 labelText: "Password",
                                 hintText: 'Enter your password')),
                         const SizedBox(
@@ -112,20 +138,25 @@ class SignUpPage extends StatelessWidget {
                         MainButton(
                             ontap: () {
                               if (_formKey.currentState!.validate()) {
-
-                                BlocProvider.of<AuthControllerBloc>(context).add(
-                                    SignUpEvent(
+                                BlocProvider.of<AuthControllerBloc>(context)
+                                    .add(SignUpEvent(
                                         email: _emailController.text,
                                         password: _passwordController.text,
                                         data: Map()));
-
                               }
                             },
                             text: "Sign up"),
                         const SizedBox(
                           height: 80,
                         ),
-                        const SocialAccountsRow(title: "Or Sign up with")
+                        MainButton(
+                            ontap: () {
+                              if (_formKey.currentState!.validate()) {
+                                BlocProvider.of<AuthControllerBloc>(context)
+                                    .add(GoogleSignInEvent());
+                              }
+                            },
+                            text: "Sign in with google"),
                       ],
                     ),
                   ),

@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
-import 'package:e_commerce_app/auth/presentation/widgets/social_account_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,8 +6,21 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../core/utilities/routes.dart';
 import '../controllers/auth_controller_bloc.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool _obscureText = true;
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +96,18 @@ class LoginPage extends StatelessWidget {
                           validator: (val) => val!.isEmpty
                               ? 'Please enter your password'
                               : null,
-                          decoration: const InputDecoration(
+                          obscureText: _obscureText,
+                          decoration: InputDecoration(
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  _toggle();
+                                },
+                                child: Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: (_obscureText == true)
+                                        ? Icon(Icons.lock)
+                                        : Icon(Icons.lock_open_sharp)),
+                              ),
                               labelText: "Password",
                               hintText: 'Enter your password')),
                       const SizedBox(
@@ -115,7 +138,14 @@ class LoginPage extends StatelessWidget {
                       const SizedBox(
                         height: 80,
                       ),
-                      const SocialAccountsRow(title: "Or login with"),
+                      MainButton(
+                          ontap: () {
+                            if (_formKey.currentState!.validate()) {
+                              BlocProvider.of<AuthControllerBloc>(context)
+                                  .add(GoogleSignInEvent());
+                            }
+                          },
+                          text: "Sign in with google"),
                       const SizedBox(
                         height: 20,
                       ),

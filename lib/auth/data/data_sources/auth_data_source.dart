@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../core/utilities/errors/exceptions.dart';
-
 
 abstract class AuthDataSource {
   User? get currentUser;
@@ -11,12 +11,15 @@ abstract class AuthDataSource {
   Future<User?> loginWithEmailAndPassword(String email, String password);
 
   Future<User?> signUpWithEmailAndPassword(String email, String password);
+
+  Future<User?> signInGoogle();
 }
 
 class AuthDataSourceImpl extends AuthDataSource {
   final FirebaseAuth? auth;
 
   AuthDataSourceImpl(this.auth);
+
   //AuthDataSourceImpl({required this.auth}); todo
 
   @override
@@ -52,6 +55,29 @@ class AuthDataSourceImpl extends AuthDataSource {
   @override
   User? get currentUser => auth!.currentUser;
 
+  @override
+  Future<User?> signInGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((value) {
+        return value.user;
+      });
+    } on Exception catch (e) {
+      rethrow;
+    }
+  }
+
   String getMessageFromErrorCode(String code) {
     switch (code) {
       case "ERROR_EMAIL_ALREADY_IN_USE":
@@ -74,7 +100,6 @@ class AuthDataSourceImpl extends AuthDataSource {
       case "ERROR_TOO_MANY_REQUESTS":
       case "operation-not-allowed":
         return "Too many requests to log into this account.";
-
 
       case "operation-not-allowed":
       case "ERROR_OPERATION_NOT_ALLOWED":

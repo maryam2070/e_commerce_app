@@ -18,3 +18,8 @@ class LoginEvent extends AuthControllerEvent {
 
   LoginEvent({required this.email, required this.password});
 }
+
+class GoogleSignInEvent extends AuthControllerEvent {
+
+  GoogleSignInEvent();
+}

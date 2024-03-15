@@ -39,8 +39,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-
-      create: (context) => AuthControllerBloc(signUpUseCase: getIt.get<SignUpUseCase>(),loginUseCase: getIt.get<LoginUseCase>()),
+      create: (context) => AuthControllerBloc(
+          signUpUseCase: getIt.get<SignUpUseCase>(),
+          loginUseCase: getIt.get<LoginUseCase>(),
+      googleSignInUseCase: getIt.get()),
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
