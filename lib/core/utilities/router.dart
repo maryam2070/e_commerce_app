@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/auth/presentation/pages/forgot_password_page.dart';
 import 'package:e_commerce_app/auth/presentation/pages/login_page.dart';
 import 'package:e_commerce_app/auth/presentation/pages/sign_up_page.dart';
 import 'package:e_commerce_app/auth/presentation/pages/landing_page.dart';
@@ -19,6 +20,9 @@ Route<dynamic> onGenerate(RouteSettings st) {
     case AppRoutes.signupRoute:
       return CupertinoPageRoute(
           builder: (_) => const SignUpPage(), settings: st);
+    case AppRoutes.forgotPasswordRoute:
+      return CupertinoPageRoute(
+          builder: (_) => const ForgotPasswordPage(), settings: st);
 
     case AppRoutes.homeRoute:
       return CupertinoPageRoute(builder: (_) => const HomePage(), settings: st);
@@ -32,6 +36,7 @@ Route<dynamic> onGenerate(RouteSettings st) {
         return CupertinoPageRoute(
             builder: (_) => ProductDetails(product: product), settings: st);
       }
+
     default:
       return CupertinoPageRoute(
           builder: (_) => const LandingPage(), settings: st);

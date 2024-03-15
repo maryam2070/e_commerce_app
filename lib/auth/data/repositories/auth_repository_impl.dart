@@ -12,7 +12,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource ds;
   final FirestoreDataSource firestoreDs;
 
-  AuthRepositoryImpl({required this.ds,required this.firestoreDs});
+  AuthRepositoryImpl({required this.ds, required this.firestoreDs});
 
   @override
   Future<Either<Failure, User?>> loginWithEmailAndPassword(
@@ -37,7 +37,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> assignUserData(String uid, Map<String, dynamic> data) async{
+  Future<Either<Failure, void>> assignUserData(
+      String uid, Map<String, dynamic> data) async {
     try {
       await firestoreDs.setData(path: ApiPaths.userPath(uid), data: data);
       return const Right(Unit);
@@ -47,10 +48,19 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, User?>> signInGoogle()  async{
+  Future<Either<Failure, User?>> signInGoogle() async {
     try {
-      final user=await ds.signInGoogle();
+      final user = await ds.signInGoogle();
       return Right(user);
+    } on AuthException catch (e) {
+      return Left(FirebaseAuthFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> forgotPassword(String email) async {
+    try {
+      return Right(ds.forgotPassword(email));
     } on AuthException catch (e) {
       return Left(FirebaseAuthFailure(message: e.message));
     }

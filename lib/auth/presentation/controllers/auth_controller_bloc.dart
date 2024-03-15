@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:e_commerce_app/auth/domain/usecases/login_use_case.dart';
 import 'package:meta/meta.dart';
 
+import '../../domain/usecases/forgot_password_use_case.dart';
 import '../../domain/usecases/google_signin_use_case.dart';
 import '../../domain/usecases/sign_up_use_case.dart';
 
@@ -15,10 +16,13 @@ class AuthControllerBloc
   final LoginUseCase loginUseCase;
   final GoogleSignInUseCase googleSignInUseCase;
 
+  final ForgotPasswordUseCase forgotPasswordUseCase;
+
   AuthControllerBloc(
       {required this.signUpUseCase,
       required this.loginUseCase,
-      required this.googleSignInUseCase})
+      required this.googleSignInUseCase,
+      required this.forgotPasswordUseCase})
       : super(AuthControllerInitial()) {
     on<AuthControllerEvent>((event, emit) async {
       if (event is SignUpEvent) {
@@ -45,6 +49,16 @@ class AuthControllerBloc
       if (event is GoogleSignInEvent) {
         emit(AuthControllerLoading());
         final call = await googleSignInUseCase.call();
+        call.fold((l) {
+          emit(AuthControllerError(message: l.message));
+        }, (r) {
+          emit(AuthControllerSuccess());
+        });
+      }
+
+      if (event is ForgotPasswordEvent) {
+        emit(AuthControllerLoading());
+        final call = await forgotPasswordUseCase.call(event.email);
         call.fold((l) {
           emit(AuthControllerError(message: l.message));
         }, (r) {

@@ -42,7 +42,8 @@ class MyApp extends StatelessWidget {
       create: (context) => AuthControllerBloc(
           signUpUseCase: getIt.get<SignUpUseCase>(),
           loginUseCase: getIt.get<LoginUseCase>(),
-      googleSignInUseCase: getIt.get()),
+      googleSignInUseCase: getIt.get(),
+      forgotPasswordUseCase: getIt.get()),
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,

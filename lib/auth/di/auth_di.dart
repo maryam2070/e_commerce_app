@@ -9,29 +9,28 @@ import 'package:e_commerce_app/shared/data/data_sources/firestore_data_source.da
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
+import '../domain/usecases/forgot_password_use_case.dart';
+
 final getIt = GetIt.asNewInstance();
 
 void authSetup() {
-
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
 
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
 
-  getIt.registerSingleton<AuthDataSource>(
-      AuthDataSourceImpl(getIt.get()));
+  getIt.registerSingleton<AuthDataSource>(AuthDataSourceImpl(getIt.get()));
   getIt.registerSingleton<FirestoreDataSource>(
       FirestoreDataSourceImpl(firestore: getIt.get()));
 
+  getIt.registerSingleton<AuthRepository>(
+      AuthRepositoryImpl(ds: getIt.get(), firestoreDs: getIt.get()));
 
-  getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl(
-      ds: getIt.get(),
-      firestoreDs: getIt.get()));
-
-  getIt.registerSingleton<SignUpUseCase>(
-      SignUpUseCase(repository: getIt.get()));
-  getIt.registerSingleton<LoginUseCase>(
-      LoginUseCase(repository: getIt.get()));
+  getIt
+      .registerSingleton<SignUpUseCase>(SignUpUseCase(repository: getIt.get()));
+  getIt.registerSingleton<LoginUseCase>(LoginUseCase(repository: getIt.get()));
 
   getIt.registerSingleton<GoogleSignInUseCase>(
       GoogleSignInUseCase(repository: getIt.get()));
+  getIt.registerSingleton<ForgotPasswordUseCase>(
+      ForgotPasswordUseCase(repository: getIt.get()));
 }

@@ -20,6 +20,11 @@ class LoginEvent extends AuthControllerEvent {
 }
 
 class GoogleSignInEvent extends AuthControllerEvent {
-
   GoogleSignInEvent();
+}
+
+class ForgotPasswordEvent extends AuthControllerEvent {
+  String email;
+
+  ForgotPasswordEvent({required this.email});
 }

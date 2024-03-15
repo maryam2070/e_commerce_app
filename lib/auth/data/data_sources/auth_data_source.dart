@@ -13,14 +13,14 @@ abstract class AuthDataSource {
   Future<User?> signUpWithEmailAndPassword(String email, String password);
 
   Future<User?> signInGoogle();
+
+  void forgotPassword(String email);
 }
 
 class AuthDataSourceImpl extends AuthDataSource {
   final FirebaseAuth? auth;
 
   AuthDataSourceImpl(this.auth);
-
-  //AuthDataSourceImpl({required this.auth}); todo
 
   @override
   Future<User?> loginWithEmailAndPassword(String email, String password) async {
@@ -61,7 +61,7 @@ class AuthDataSourceImpl extends AuthDataSource {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
+          await googleUser?.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
@@ -73,6 +73,15 @@ class AuthDataSourceImpl extends AuthDataSource {
           .then((value) {
         return value.user;
       });
+    } on Exception catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  void forgotPassword(String email) async {
+    try {
+      return await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     } on Exception catch (e) {
       rethrow;
     }
@@ -113,6 +122,4 @@ class AuthDataSourceImpl extends AuthDataSource {
         return "Login failed. Please try again.";
     }
   }
-
-
 }

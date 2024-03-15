@@ -118,7 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: InkWell(
                           child: const Text("Forgot your password?"),
                           onTap: () {
-                            //todo navigate to forgot password
+                            Navigator.of(context)
+                                .pushNamed(AppRoutes.forgotPasswordRoute);
                           },
                         ),
                       ),
