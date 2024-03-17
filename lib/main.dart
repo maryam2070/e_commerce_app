@@ -13,6 +13,9 @@ import 'core/utilities/routes.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'firebase_options.dart';
+import 'home/di/home_di.dart';
+import 'home/domain/use_cases/get_new_product_list_use_case.dart';
+import 'home/presentation/controllers/home_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,21 +32,31 @@ Future<void> main() async {
 
 
   authSetup();
+  homeSetup();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthControllerBloc(
-          signUpUseCase: getIt.get<SignUpUseCase>(),
-          loginUseCase: getIt.get<LoginUseCase>(),
-      googleSignInUseCase: getIt.get(),
-      forgotPasswordUseCase: getIt.get()),
+
+    final getIt = GetIt.I;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              AuthControllerBloc(
+                  signUpUseCase: getIt.get<SignUpUseCase>(),
+                  loginUseCase: getIt.get<LoginUseCase>(),
+                  googleSignInUseCase: getIt.get(),
+                  forgotPasswordUseCase: getIt.get()),
+        ),
+        BlocProvider(
+          create: (context) => HomeBloc(getNewProductListUseCase: getIt.get(), getSaleProductListUseCase: getIt.get(),)..add(HomeEvent()),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
@@ -79,7 +92,7 @@ class MyApp extends StatelessWidget {
                   borderSide: BorderSide(color: Colors.red))),
         ),
         onGenerateRoute: onGenerate,
-        initialRoute: AppRoutes.loginRoute,
+        initialRoute: AppRoutes.homeRoute,
       ),
     );
   }

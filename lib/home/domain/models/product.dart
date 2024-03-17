@@ -14,9 +14,9 @@ class Product {
     required this.title,
     required this.price,
     required this.imgUrl,
-    this.discountValue,
-    this.category = 'Other',
-    this.rate,
+    required this.discountValue,
+    required this.category ,
+    required this.rate,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,60 +39,7 @@ class Product {
       imgUrl: map['imgUrl'] as String,
       discountValue: map['discountValue'] as int,
       category: map['category'] as String,
-      rate: map['rate'] as double,
+      rate: double.parse(map['rate'].toString()) ,
     );
   }
 }
-
-List<Product> dummyProducts = [
-  Product(
-    id: '1',
-    title: 'T-shirt',
-    price: 300,
-    imgUrl: Assets.tempProductAsset1,
-    category: 'Clothes',
-    discountValue: 20,
-    rate: 4
-  ),
-  Product(
-    id: '1',
-    title: 'T-shirt',
-    price: 300,
-    imgUrl: Assets.tempProductAsset1,
-    category: 'Clothes',
-    discountValue: 20,
-      rate: 5
-  ),
-  Product(
-    id: '1',
-    title: 'T-shirt',
-    price: 300,
-    imgUrl: Assets.tempProductAsset1,
-    category: 'Clothes',
-    discountValue: 20,
-      rate: 1.5
-  ),
-  Product(
-    id: '1',
-    title: 'T-shirt',
-    price: 300,
-    imgUrl: Assets.tempProductAsset1,
-    category: 'Clothes',
-    discountValue: 20,
-  ),
-  Product(
-    id: '1',
-    title: 'T-shirt',
-    price: 300,
-    imgUrl: Assets.tempProductAsset1,
-    category: 'Clothes',
-  ),
-  Product(
-    id: '1',
-    title: 'T-shirt',
-    price: 300,
-    imgUrl: Assets.tempProductAsset1,
-    category: 'Clothes',
-    discountValue: 20,
-  ),
-];

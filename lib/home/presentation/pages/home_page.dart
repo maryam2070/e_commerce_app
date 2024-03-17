@@ -1,6 +1,8 @@
 import 'package:e_commerce_app/home/domain/models/product.dart';
+import 'package:e_commerce_app/home/presentation/controllers/home_bloc.dart';
 import 'package:e_commerce_app/home/presentation/widgets/list_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utilities/assets.dart';
 
@@ -10,68 +12,91 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                Image.network(Assets.homePage,
-                    width: double.infinity,
-                    height: size.height * 0.3,
-                    fit: BoxFit.cover),
-                Opacity(
-                    opacity: .3,
-                    child: Container(
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is HomeSuccess) {
+          print(state.saleProductList);
+          print(state.newProductList);
+        }
+        return Scaffold(
+          body: ListView(
+            children: [
+              Stack(
+                alignment: Alignment.bottomLeft,
+                children: [
+                  Image.network(Assets.homePage,
                       width: double.infinity,
                       height: size.height * 0.3,
-                      color: Colors.black,
-                    )),
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Text("Street Clothes",
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          )),
-                )
-              ],
-            ),
-            SizedBox(height: 24.0),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
-                child: ListHeader(
-                    title: "Sale", description: "Super Summer Sale", onTap: () {})),
-            SizedBox(height: 0.8),
-            SizedBox(
-              height: 350,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: dummyProducts.map((e) => Padding(
-                  padding: EdgeInsets.all(24),
-                  child: ListItem(product: e),
-                )).toList(),
+                      fit: BoxFit.cover),
+                  Opacity(
+                      opacity: .3,
+                      child: Container(
+                        width: double.infinity,
+                        height: size.height * 0.3,
+                        color: Colors.black,
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Text("Street Clothes",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            )),
+                  )
+                ],
               ),
-            ),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
-                child: ListHeader(
-                    title: "New", description: "Super New Products", onTap: () {})),
-            SizedBox(height: 0.8),
-            SizedBox(
-              height: 350,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: dummyProducts.map((e) => Padding(
-                  padding: EdgeInsets.all(24),
-                  child: ListItem(product: e),
-                )).toList(),
-              ),
-            )
-          ],
-        ),
-      ),
+              SizedBox(height: 24.0),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  child: ListHeader(
+                      title: "Sale",
+                      description: "Super Summer Sale",
+                      onTap: () {})),
+              SizedBox(height: 0.8),
+              (state is HomeSuccess)
+                  ? SizedBox(
+                      width: size.width,
+                      height: size.height * .45,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: state.saleProductList
+                            .map((e) => Padding(
+                                  padding: EdgeInsets.all(24),
+                                  child: ListItem(product: e),
+                                ))
+                            .toList(),
+                      ),
+                    )
+                  : Container(),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  child: ListHeader(
+                      title: "New",
+                      description: "Super New Products",
+                      onTap: () {})),
+              SizedBox(height: 0.8),
+              (state is HomeSuccess)
+                  ? SizedBox(
+                      width: size.width,
+                      height: size.height * .45,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: state.newProductList
+                            .map((e) => Padding(
+                                  padding: EdgeInsets.all(24),
+                                  child: ListItem(product: e),
+                                ))
+                            .toList(),
+                      ),
+                    )
+                  : Container(),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -92,18 +117,9 @@ class ListHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title,
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                    fontWeight: FontWeight.bold, color: Colors.black)),
-            InkWell(
-                onTap: onTap,
-                child: Text("View All",
-                    style: Theme.of(context).textTheme.bodyMedium!))
-          ],
-        ),
+        Text(title,
+            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                fontWeight: FontWeight.bold, color: Colors.black)),
         Text(description,
             style: Theme.of(context)
                 .textTheme

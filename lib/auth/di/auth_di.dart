@@ -11,7 +11,7 @@ import 'package:get_it/get_it.dart';
 
 import '../domain/usecases/forgot_password_use_case.dart';
 
-final getIt = GetIt.asNewInstance();
+final getIt = GetIt.I;
 
 void authSetup() {
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
