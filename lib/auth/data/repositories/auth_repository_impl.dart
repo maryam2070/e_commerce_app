@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce_app/auth/data/data_sources/auth_data_source.dart';
-import 'package:e_commerce_app/shared/data/data_sources/firestore_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../core/data/data_sources/firestore_data_source.dart';
 import '../../../core/utilities/api_paths.dart';
 import '../../../core/utilities/errors/exceptions.dart';
 import '../../../core/utilities/errors/failures.dart';

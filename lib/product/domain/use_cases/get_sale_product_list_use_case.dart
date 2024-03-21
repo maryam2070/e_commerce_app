@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
-import 'package:e_commerce_app/home/domain/repositories/home_repository.dart';
 
 import '../../../core/utilities/api_paths.dart';
 import '../../../core/utilities/errors/failures.dart';
 import '../models/product.dart';
+import '../repositories/product_repository.dart';
 
 class GetSaleProductListUseCase {
-  HomeRepository repository;
+  ProductRepository repository;
 
   GetSaleProductListUseCase({required this.repository});
 

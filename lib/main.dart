@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/auth/domain/usecases/login_use_case.dart';
+import 'package:e_commerce_app/product/di/product_di.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,15 +8,13 @@ import 'package:get_it/get_it.dart';
 import 'auth/di/auth_di.dart';
 import 'auth/domain/usecases/sign_up_use_case.dart';
 import 'auth/presentation/controllers/auth_controller_bloc.dart';
+import 'core/presentation/controllers/home_bloc.dart';
 import 'core/utilities/router.dart';
 import 'core/utilities/routes.dart';
 
 import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'firebase_options.dart';
-import 'home/di/home_di.dart';
-import 'home/domain/use_cases/get_new_product_list_use_case.dart';
-import 'home/presentation/controllers/home_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +31,7 @@ Future<void> main() async {
 
 
   authSetup();
-  homeSetup();
+  productSetup();
   runApp(const MyApp());
 }
 

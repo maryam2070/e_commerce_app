@@ -1,7 +1,7 @@
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
-import 'package:e_commerce_app/home/domain/models/product.dart';
 import 'package:flutter/material.dart';
 
+import '../../../product/domain/models/product.dart';
 import '../widgets/drop_down_menu.dart';
 
 class ProductDetails extends StatefulWidget {

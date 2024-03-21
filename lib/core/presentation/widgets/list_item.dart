@@ -1,7 +1,8 @@
 import 'package:e_commerce_app/core/utilities/routes.dart';
-import 'package:e_commerce_app/home/domain/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../../../product/domain/models/product.dart';
 
 class ListItem extends StatelessWidget {
   Product product;

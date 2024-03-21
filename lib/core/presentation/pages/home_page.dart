@@ -1,10 +1,10 @@
-import 'package:e_commerce_app/home/domain/models/product.dart';
-import 'package:e_commerce_app/home/presentation/controllers/home_bloc.dart';
-import 'package:e_commerce_app/home/presentation/widgets/list_item.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utilities/assets.dart';
+import '../controllers/home_bloc.dart';
+import '../widgets/list_item.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

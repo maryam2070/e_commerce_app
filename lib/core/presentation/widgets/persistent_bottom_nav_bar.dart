@@ -1,13 +1,10 @@
 
-import 'package:e_commerce_app/home/presentation/pages/bag_page.dart';
-import 'package:e_commerce_app/home/presentation/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-import '../../../home/presentation/pages/add_shipping_address.dart';
-import '../../../home/presentation/pages/check_out_page.dart';
-import '../../../home/presentation/pages/payment_methods_page.dart';
+import '../pages/bag_page.dart';
+import '../pages/home_page.dart';
 
 class BottomNavigationBar extends StatefulWidget {
   const BottomNavigationBar({super.key});

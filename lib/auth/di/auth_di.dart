@@ -5,10 +5,10 @@ import 'package:e_commerce_app/auth/domain/repositories/auth_repository.dart';
 import 'package:e_commerce_app/auth/domain/usecases/google_signin_use_case.dart';
 import 'package:e_commerce_app/auth/domain/usecases/login_use_case.dart';
 import 'package:e_commerce_app/auth/domain/usecases/sign_up_use_case.dart';
-import 'package:e_commerce_app/shared/data/data_sources/firestore_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../core/data/data_sources/firestore_data_source.dart';
 import '../domain/usecases/forgot_password_use_case.dart';
 
 final getIt = GetIt.I;
