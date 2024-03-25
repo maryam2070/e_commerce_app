@@ -8,7 +8,9 @@ import 'package:get_it/get_it.dart';
 import 'auth/di/auth_di.dart';
 import 'auth/domain/usecases/sign_up_use_case.dart';
 import 'auth/presentation/controllers/auth_controller_bloc.dart';
-import 'core/presentation/controllers/home_bloc.dart';
+import 'cart/di/cart_di.dart';
+import 'core/presentation/controllers/cart_controller/cart_bloc.dart';
+import 'core/presentation/controllers/home_controller/home_bloc.dart';
 import 'core/utilities/router.dart';
 import 'core/utilities/routes.dart';
 
@@ -19,7 +21,6 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -29,9 +30,9 @@ Future<void> main() async {
     appleProvider: AppleProvider.appAttest,
   );
 
-
   authSetup();
   productSetup();
+  cartSetup();
   runApp(const MyApp());
 }
 
@@ -40,21 +41,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final getIt = GetIt.I;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              AuthControllerBloc(
-                  signUpUseCase: getIt.get<SignUpUseCase>(),
-                  loginUseCase: getIt.get<LoginUseCase>(),
-                  googleSignInUseCase: getIt.get(),
-                  forgotPasswordUseCase: getIt.get()),
+          create: (context) => AuthControllerBloc(
+              signUpUseCase: getIt.get<SignUpUseCase>(),
+              loginUseCase: getIt.get<LoginUseCase>(),
+              googleSignInUseCase: getIt.get(),
+              forgotPasswordUseCase: getIt.get()),
         ),
         BlocProvider(
-          create: (context) => HomeBloc(getNewProductListUseCase: getIt.get(), getSaleProductListUseCase: getIt.get(),)..add(HomeEvent()),
+          create: (context) => HomeBloc(
+            getNewProductListUseCase: getIt.get(),
+            getSaleProductListUseCase: getIt.get(),
+          )..add(HomeEvent()),
         ),
+        BlocProvider(
+            create: (context) => CartBloc(addToCartUseCase: getIt.get(),
+                getCartUseCase: getIt.get(),
+                deleteFromCartUseCase: getIt.get())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -62,9 +68,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           bottomAppBarColor: Colors.white,
           colorScheme:
-          ColorScheme.fromSeed(seedColor: Theme
-              .of(context)
-              .primaryColor),
+              ColorScheme.fromSeed(seedColor: Theme.of(context).primaryColor),
           iconTheme: const IconThemeData(color: Colors.black),
           scaffoldBackgroundColor: const Color(0xfff9f9f9),
           //primarySwatch:  MaterialColor(Colo,0xffDB3022, as Map<int, Color>),
@@ -91,7 +95,7 @@ class MyApp extends StatelessWidget {
                   borderSide: BorderSide(color: Colors.red))),
         ),
         onGenerateRoute: onGenerate,
-        initialRoute: AppRoutes.homeRoute,
+        initialRoute: AppRoutes.navRoute,
       ),
     );
   }

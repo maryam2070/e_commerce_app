@@ -8,6 +8,7 @@ class Product {
   final int? discountValue;
   final String category;
   final double? rate;
+  final String description;
 
   Product({
     required this.id,
@@ -17,6 +18,7 @@ class Product {
     required this.discountValue,
     required this.category ,
     required this.rate,
+    required this.description,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +30,7 @@ class Product {
       'discountValue': discountValue,
       'category': category,
       'rate': rate,
+      'description': description,
     };
   }
 
@@ -40,6 +43,7 @@ class Product {
       discountValue: map['discountValue'] as int,
       category: map['category'] as String,
       rate: double.parse(map['rate'].toString()) ,
+      description: map['description'] as String,
     );
   }
 }

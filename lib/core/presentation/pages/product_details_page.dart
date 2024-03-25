@@ -1,5 +1,8 @@
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
+import 'package:e_commerce_app/cart/domain/models/add_to_cart_model.dart';
+import 'package:e_commerce_app/core/presentation/controllers/cart_controller/cart_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../product/domain/models/product.dart';
 import '../widgets/drop_down_menu.dart';
@@ -15,22 +18,20 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   bool isFav = false;
-
+  var sizeValue="";
+  var colorValue="";
+  var quantityValue=1;
   @override
   Widget build(BuildContext context) {
+
     final size = MediaQuery.of(context).size;
+    return BlocBuilder<CartBloc, CartState>(
+  builder: (context, state) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.product.title,
             style: Theme.of(context).textTheme.bodyMedium),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                //todo
-              },
-              icon: Icon(Icons.share))
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -53,7 +54,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Expanded(
                           child: SizedBox(
                         child: DropDownMenuComponent(
-                            onChanged: (String? value) {},
+                            onChanged: (String? value) {
+                              sizeValue=value!;
+                            },
                             items: const ["xs", "s", "m", "l", "xl", "xxl"],
                             hint: "size"),
                       )),
@@ -61,7 +64,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Expanded(
                         child: SizedBox(
                           child: DropDownMenuComponent(
-                              onChanged: (String? value) {},
+                              onChanged: (String? value) {
+                                colorValue=value!;
+                              },
                               items: const ["blue", "red", "black"],
                               hint: "color"),
                         ),
@@ -118,15 +123,47 @@ class _ProductDetailsState extends State<ProductDetails> {
                   const SizedBox(height: 16),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("deeeeeeeesssssssscptionnnnnnnnnn",
+                    child: Text("${widget.product.description}",
                         //"\$${"widget.product.description"}",
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.grey)),
                   ),
                   const SizedBox(height: 16),
+                  //SizedBox(height: size.height * .05),
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _circleIcon(() {
+                          setState(() {
+                            quantityValue++;
+                          });
+                        }, Icons.add),
+                        SizedBox(width: size.width * .03),
+                        Text('${quantityValue}'),
+                        SizedBox(width: size.width * .03),
+                        _circleIcon(() {
+                          setState(() {
+                            if(quantityValue!=1)quantityValue--;
+                          });
+                        }, Icons.remove)
+                      ],
+                    ),
+                  ),
                   MainButton(
                       ontap: () {
-                        //todo
+                        BlocProvider.of<CartBloc>(context).add(AddToCartEvent(model:
+                        AddToCartModel(id: '',
+                            title: widget.product.title,
+                            price: widget.product.price,
+                            productId: widget.product.id,
+                            imgUrl: widget.product.imgUrl,
+                            size: sizeValue,
+                            color:colorValue,
+                            isChecked: false,
+                            quantity: quantityValue,
+                            discountValue: widget.product.discountValue!)));
                       },
                       text: "Add To Cart")
                 ],
@@ -136,5 +173,14 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
       ),
     );
+  },
+);
   }
 }
+
+Widget _circleIcon(VoidCallback onTap, IconData icon) => GestureDetector(
+  onTap: onTap,
+  child: DecoratedBox(
+      decoration: BoxDecoration(shape: BoxShape.circle),
+      child: Icon(icon)),
+);

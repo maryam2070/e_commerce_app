@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utilities/assets.dart';
-import '../controllers/home_bloc.dart';
+import '../controllers/home_controller/home_bloc.dart';
 import '../widgets/list_item.dart';
 
 class HomePage extends StatelessWidget {

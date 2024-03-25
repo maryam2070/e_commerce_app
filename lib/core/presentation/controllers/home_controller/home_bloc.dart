@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../product/domain/models/product.dart';
-import '../../../product/domain/use_cases/get_new_product_list_use_case.dart';
-import '../../../product/domain/use_cases/get_sale_product_list_use_case.dart';
+import '../../../../product/domain/models/product.dart';
+import '../../../../product/domain/use_cases/get_new_product_list_use_case.dart';
+import '../../../../product/domain/use_cases/get_sale_product_list_use_case.dart';
+
 part 'home_event.dart';
 
 part 'home_state.dart';
