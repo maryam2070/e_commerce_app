@@ -24,7 +24,7 @@ online application provides online shopping experience to users
 
 ## Technologies 
 - Dart
-- clean archeticture 
+- clean architecture 
 - firebase 
 - flutter_bloc
 - equatable 
