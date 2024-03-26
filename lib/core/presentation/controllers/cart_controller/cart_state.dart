@@ -13,7 +13,7 @@ class CartError extends CartState {
   CartError({required this.message});
 }
 
-class AddToCartSuccessSuccess extends CartState {
+class AddToCartSuccess extends CartState {
 
 }
 
@@ -22,7 +22,16 @@ class GetCartSuccess extends CartState {
   GetCartSuccess({required this.models});
 }
 class DeleteFromCartSuccess extends CartState {
-
   DeleteFromCartSuccess();
 }
+class AddOrderSuccess extends CartState {
 
+}
+class GetOrdersSuccess extends CartState {
+  List<OrderModel> orders;
+  GetOrdersSuccess({required this.orders});
+}
+
+class CancelOrderSuccess extends CartState {
+  CancelOrderSuccess();
+}

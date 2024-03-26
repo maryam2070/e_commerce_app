@@ -11,6 +11,6 @@ class GetCartUseCase {
 
   Future<Either<Failure, List<AddToCartModel>>> call() {
     return repository.getCartModels(
-        builder: (data, documentId) => AddToCartModel.fromMap(data!, documentId));
+        builder: (data) => AddToCartModel.fromMap(data!));
   }
 }

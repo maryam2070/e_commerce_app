@@ -1,29 +1,31 @@
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
 import 'package:e_commerce_app/cart/domain/models/add_to_cart_model.dart';
+import 'package:e_commerce_app/core/presentation/pages/check_out_page.dart';
 import 'package:e_commerce_app/core/utilities/assets.dart';
+import 'package:e_commerce_app/core/utilities/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../controllers/cart_controller/cart_bloc.dart';
 
-class BagPage extends StatefulWidget {
-  const BagPage({super.key});
+class CartPage extends StatefulWidget {
+  const CartPage({super.key});
 
   @override
-  State<BagPage> createState() => _BagPageState();
+  State<CartPage> createState() => _CartPageState();
 }
 
-class _BagPageState extends State<BagPage> {
-
-  int totalAmount=0;
+class _CartPageState extends State<CartPage> {
+  int totalAmount = 0;
+  List<AddToCartModel> models = [];
   @override
   Widget build(BuildContext context) {
-
     final size = MediaQuery.of(context).size;
 
     BlocProvider.of<CartBloc>(context).add(GetCartEvent());
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
+        if (state is GetCartSuccess) models = state.models;
         return Scaffold(
             appBar: AppBar(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -51,27 +53,30 @@ class _BagPageState extends State<BagPage> {
                           ?.copyWith(fontWeight: FontWeight.w600)),
                   (state is GetCartSuccess)
                       ? Column(
-                    children: state.models
-                        .map((e) => Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: ListItem(model: e),
-                    ))
-                        .toList(),
-                  )
+                          children: state.models
+                              .map((e) => Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    child: CartListItem(model: e, canDelete: true,),
+                                  ))
+                              .toList(),
+                        )
                       : Container(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Toatal price",
+                        Text("Total price",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge
                                 ?.copyWith(fontWeight: FontWeight.w600)),
-                        Text((state is GetCartSuccess)
-                            ?sum(state.models.map((e) => e.price)).toString()+"\$":"",
+                        Text(
+                            (state is GetCartSuccess)
+                                ? sum(state.models.map((e) => e.price))
+                                        .toString() +
+                                    "\$"
+                                : "",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge
@@ -82,7 +87,18 @@ class _BagPageState extends State<BagPage> {
                   SizedBox(height: size.height * 0.05),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: MainButton(ontap: () {}, text: "CHECK OUT"),
+                    child: Builder(builder: (context) {
+                      return MainButton(
+                          ontap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CheckOutPage(models: models)),
+                            );
+                          },
+                          text: "CHECK OUT");
+                    }),
                   ),
                   SizedBox(height: size.height * 0.04),
                 ],
@@ -93,9 +109,9 @@ class _BagPageState extends State<BagPage> {
   }
 
   sum(Iterable<int> prices) {
-    var s=0;
+    var s = 0;
     prices.forEach((element) {
-      s+=element;
+      s += element;
     });
     return s;
   }
@@ -111,22 +127,23 @@ class TitleAndValue extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
         text: TextSpan(children: [
-          TextSpan(children: [
-            TextSpan(
-                text: title,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(color: Colors.grey)),
-            TextSpan(text: value, style: Theme.of(context).textTheme.bodyLarge)
-          ])
-        ]));
+      TextSpan(children: [
+        TextSpan(
+            text: title,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(color: Colors.grey)),
+        TextSpan(text: value, style: Theme.of(context).textTheme.bodyLarge)
+      ])
+    ]));
   }
 }
 
-class ListItem extends StatelessWidget {
+class CartListItem extends StatelessWidget {
   final AddToCartModel model;
-  const ListItem({required this.model, super.key});
+  bool canDelete;
+  CartListItem({required this.canDelete,required this.model, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +158,6 @@ class ListItem extends StatelessWidget {
             children: [
               SizedBox(
                 width: size.width * .3,
-                height: size.height * .3,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(model.imgUrl),
@@ -184,18 +200,19 @@ class ListItem extends StatelessWidget {
                   ),
                 ],
               ),
-              Padding(
+              (canDelete==true)?Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Align(
                   alignment: Alignment.topRight,
                   child: GestureDetector(
                     onTap: () {
-                      BlocProvider.of<CartBloc>(context).add(DeleteFromCartEvent(id: model.id));
+                      BlocProvider.of<CartBloc>(context)
+                          .add(DeleteFromCartEvent(id: model.id));
                     },
                     child: Icon(Icons.delete),
                   ),
                 ),
-              ),
+              ):Container(),
             ],
           ),
         ],
@@ -203,5 +220,3 @@ class ListItem extends StatelessWidget {
     );
   }
 }
-
-

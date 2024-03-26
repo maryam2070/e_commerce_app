@@ -1,10 +1,12 @@
 
+import 'package:e_commerce_app/core/presentation/pages/check_out_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-import '../pages/bag_page.dart';
+import '../pages/cart_page.dart';
 import '../pages/home_page.dart';
+import '../pages/orders_page.dart';
 
 class BottomNavigationBar extends StatefulWidget {
   const BottomNavigationBar({super.key});
@@ -16,13 +18,9 @@ class BottomNavigationBar extends StatefulWidget {
 class _BottomNavigationBarState extends State<BottomNavigationBar> {
   List<Widget> _buildScreens() {
     return [
-
       const HomePage(),
-      const BagPage(),
-       Container(),
-      Container(),
-      Container(),
-
+      const CartPage(),
+       OrderPage(),
     ];
   }
 
@@ -35,29 +33,17 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.bag),
-        title: ("Bag"),
-        activeColorPrimary: Theme.of(context).primaryColor,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
-      PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.cart),
         title: ("Cart"),
         activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.heart),
-        title: ("Cart"),
+        icon: Icon(CupertinoIcons.bag),
+        title: ("Orders"),
         activeColorPrimary: Theme.of(context).primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.person),
-        title: ("Cart"),
-        activeColorPrimary: Theme.of(context).primaryColor,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
+      )
     ];
   }
 

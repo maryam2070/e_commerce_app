@@ -58,9 +58,13 @@ class MyApp extends StatelessWidget {
           )..add(HomeEvent()),
         ),
         BlocProvider(
-            create: (context) => CartBloc(addToCartUseCase: getIt.get(),
+            create: (context) => CartBloc(
+                addToCartUseCase: getIt.get(),
                 getCartUseCase: getIt.get(),
-                deleteFromCartUseCase: getIt.get())),
+                deleteFromCartUseCase: getIt.get(),
+                addOrderUseCase: getIt.get(),
+                getOrdersUseCase: getIt.get(),
+                cancelOrderUseCase: getIt.get())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

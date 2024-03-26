@@ -6,11 +6,16 @@ import '../../../core/utilities/assets.dart';
 import '../controllers/home_controller/home_bloc.dart';
 import '../widgets/list_item.dart';
 
+
+
 class HomePage extends StatelessWidget {
+
+
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     final size = MediaQuery.of(context).size;
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {

@@ -1,6 +1,8 @@
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 
+import '../../../cart/domain/models/address.dart';
+
 class AddShippingAddress extends StatefulWidget {
   const AddShippingAddress({super.key});
 
@@ -11,8 +13,8 @@ class AddShippingAddress extends StatefulWidget {
 class _AddShippingAddressState extends State<AddShippingAddress> {
   final _formKey = GlobalKey<FormState>();
 
-  final _addressController = TextEditingController();
-  final _addressFocusNode = FocusNode();
+  final _streetController = TextEditingController();
+  final _streetFocusNode = FocusNode();
 
   final _cityController = TextEditingController();
   final _cityFocusNode = FocusNode();
@@ -25,6 +27,9 @@ class _AddShippingAddressState extends State<AddShippingAddress> {
 
   final _countryController = TextEditingController();
   final _countryFocusNode = FocusNode();
+
+  final _nameController = TextEditingController();
+  final _nameFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +53,28 @@ class _AddShippingAddressState extends State<AddShippingAddress> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
-                      controller: _addressController,
-                      focusNode: _addressFocusNode,
+                      controller: _nameController,
+                      focusNode: _nameFocusNode,
+                      onEditingComplete: () {
+                        FocusScope.of(context).requestFocus(_streetFocusNode);
+                      },
+                      textInputAction: TextInputAction.next,
+                      validator: (val) =>
+                          val!.isEmpty ? 'Please enter your name' : null,
+                      decoration: const InputDecoration(
+                        labelText: "Name",
+                      )),
+                  TextFormField(
+                      controller: _streetController,
+                      focusNode: _streetFocusNode,
                       onEditingComplete: () {
                         FocusScope.of(context).requestFocus(_cityFocusNode);
                       },
                       textInputAction: TextInputAction.next,
                       validator: (val) =>
-                          val!.isEmpty ? 'Please enter your address' : null,
+                          val!.isEmpty ? 'Please enter your street' : null,
                       decoration: const InputDecoration(
-                        labelText: "Address",
+                        labelText: "Street",
                       )),
                   TextFormField(
                       controller: _cityController,
@@ -107,7 +124,12 @@ class _AddShippingAddressState extends State<AddShippingAddress> {
                       )),
                   MainButton(
                       ontap: () {
-                        if (_formKey.currentState!.validate()) {}
+                        if (_formKey.currentState!.validate()) {
+                          Navigator.pop(context, [
+                            _nameController.text,
+                            '${_streetController.text}, ${_cityController.text}, ${_stateController.text}, ${_zipCodeController.text}, ${_countryController.text}'
+                          ]);
+                        }
                       },
                       text: "SAVE ADDRESS")
                 ],

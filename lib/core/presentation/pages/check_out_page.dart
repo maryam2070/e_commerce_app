@@ -1,162 +1,299 @@
 import 'package:e_commerce_app/auth/presentation/widgets/main_button.dart';
+import 'package:e_commerce_app/cart/domain/models/order.dart';
+import 'package:e_commerce_app/core/presentation/pages/add_shipping_address.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../cart/domain/models/add_to_cart_model.dart';
 import '../../../core/utilities/assets.dart';
+import '../controllers/cart_controller/cart_bloc.dart';
+
+String address = "";
+String name = "";
+String card = "";
 
 class CheckOutPage extends StatelessWidget {
-  const CheckOutPage({super.key});
+  List<AddToCartModel> models;
+  CheckOutPage({required this.models, super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 3,
-          backgroundColor: Colors.white,
-          title: const Text("Checkout"),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const BoldTitle(title: "Shipping address"),
-              SizedBox(height: size.height * .01),
-              AddressBox(
-                onTap: () {
-                  //todo
-                },
-                name: "Maryam Amr",
-                address: "prison realm  shebuya, jp",
+
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        return Scaffold(
+            appBar: AppBar(
+              elevation: 3,
+              backgroundColor: Colors.white,
+              title: const Text("Checkout"),
+              centerTitle: true,
+            ),
+            body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const BoldTitle(title: "Shipping address"),
+                      SizedBox(height: size.height * .01),
+                      AddressBox(),
+                      SizedBox(height: size.height * .03),
+                      BoldTitle(title: "Payment"),
+                      SizedBox(height: size.height * .01),
+                      PaymentBox(),
+                      SizedBox(height: size.height * .03),
+                      TitleAndValue(
+                        title: "order",
+                        value: "${sum(models.map((e) => e.price))}\$",
+                      ),
+                      SizedBox(height: size.height * .01),
+                      TitleAndValue(
+                        title: "delivery",
+                        value: "30\$",
+                      ),
+                      SizedBox(height: size.height * .01),
+                      TitleAndValue(
+                        title: "total",
+                        value: "${sum(models.map((e) => e.price)) + 30}\$",
+                      ),
+                      SizedBox(height: size.height * .03),
+                      MainButton(
+                          ontap: () {
+                            BlocProvider.of<CartBloc>(context).add(
+                                AddOrderEvent(
+                                    order: OrderModel(
+                                        id: '',
+                                        fullName: name,
+                                        address: address,
+                                        payment: card,
+                                        deliveryTaxes: 30,
+                                        orderPrice: double.parse(
+                                            sum(models.map((e) => e.price))
+                                                .toString()),
+                                        models: models,
+                                        status: OrderStatus.parser(
+                                            OrderStatus.PENDING))));
+                          },
+                          text: "SUBMIT ORDER")
+                    ]),
               ),
-              SizedBox(height: size.height * .03),
-              BoldTitle(title: "Payment"),
-              SizedBox(height: size.height * .01),
-              PaymentBox(
-                  card: "***** **** *** 123",
-                  onTap: () {
-                    //todo
-                  }),
-              SizedBox(height: size.height * .03),
-              const BoldTitle(title: "Delivery methods"),
-              SizedBox(height: size.height * .01),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  //todo chech scroll in phone
-                  children: [
-                    DeliveryItem(img: Assets.mastercardIcon, name: "dnfjnjn"),
-                    DeliveryItem(img: Assets.mastercardIcon, name: "dnfjnjn"),
-                    DeliveryItem(img: Assets.mastercardIcon, name: "dnfjnjn"),
-                    DeliveryItem(img: Assets.mastercardIcon, name: "dnfjnjn"),
-                  ],
-                ),
-              ),
-              SizedBox(height: size.height * .03),
-                  TitleAndValue(
-                    title: "order",
-                    value: "122\$",
-                  ),
-                  SizedBox(height: size.height * .01),
-                  TitleAndValue(
-                    title: "delivery",
-                    value: "122\$",
-                  ),
-                  SizedBox(height: size.height * .01),
-                  TitleAndValue(
-                title: "total",
-                value: "122\$",
-              ),
-                  SizedBox(height: size.height * .03),
-                  MainButton(ontap: (){
-                    //todo
-                  }, text: "SUBMIT ORDER")
-            ]),
-          ),
-        ));
+            ));
+      },
+    );
+  }
+
+  sum(Iterable<int> prices) {
+    var s = 0;
+    prices.forEach((element) {
+      s += element;
+    });
+    return s;
   }
 }
 
-class AddressBox extends StatelessWidget {
-  final VoidCallback onTap;
-  final String name;
-  final String address;
+class AddressBox extends StatefulWidget {
+  AddressBox({super.key});
 
-  const AddressBox(
-      {required this.onTap,
-      required this.name,
-      required this.address,
-      super.key});
+  @override
+  State<AddressBox> createState() => _AddressBoxState();
+}
 
+class _AddressBoxState extends State<AddressBox> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SizedBox(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: Colors.white),
-        child: Padding(
-            padding: EdgeInsets.all(size.width * .02),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20), color: Colors.white),
+      child: Padding(
+          padding: EdgeInsets.all(size.width * .02),
+          child: (name == "")
+              ? GestureDetector(
+                  onTap: () async {
+                    final List<String> result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AddShippingAddress()),
+                    );
+                    setState(() {
+                      name = result[0];
+                      address = result[1];
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Add data",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                      Icon(
+                        Icons.add,
+                        color: Theme.of(context).primaryColor,
+                      )
+                    ],
+                  ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.bold)),
-                    ChangeClickableText(onTap: onTap),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(name,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(fontWeight: FontWeight.bold)),
+                        ChangeClickableText(onTap: () async {
+                          final List<String> result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const AddShippingAddress()),
+                          );
+                          setState(() {
+                            name = result[0];
+                            address = result[1];
+                          });
+                        }),
+                      ],
+                    ),
+                    SizedBox(
+                      height: size.height * .02,
+                    ),
+                    Text(address,
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ],
-                ),
-                SizedBox(
-                  height: size.height * .02,
-                ),
-                Text(address, style: Theme.of(context).textTheme.bodyMedium),
-              ],
-            )),
-      ),
+                )),
     );
   }
 }
 
-class PaymentBox extends StatelessWidget {
-  final VoidCallback onTap;
-  final String card;
+class PaymentBox extends StatefulWidget {
+  PaymentBox({super.key});
 
-  const PaymentBox({required this.onTap, required this.card, super.key});
+  @override
+  State<PaymentBox> createState() => _PaymentBoxState();
+}
 
+class _PaymentBoxState extends State<PaymentBox> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final _cardController = TextEditingController();
     return SizedBox(
       child: DecoratedBox(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20), color: Colors.white),
         child: Padding(
           padding: EdgeInsets.all(size.width * .02),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: size.width * .07,
-                height: size.height * .07,
-                child: Image.network(Assets.mastercardIcon),
-              ),
-              Text(card,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.bold)),
-              Spacer(),
-              ChangeClickableText(onTap: onTap),
-            ],
-          ),
+          child: (card == "")
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Add data",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.bold)),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Padding(
+                              padding: const EdgeInsets.all(40.0),
+                              child: Wrap(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextFormField(
+                                        controller: _cardController,
+                                        onEditingComplete: () {},
+                                        textInputAction: TextInputAction.next,
+                                        validator: (val) => val!.isEmpty
+                                            ? 'Please enter your card'
+                                            : null,
+                                        decoration: const InputDecoration(
+                                          labelText: "Card",
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: MainButton(
+                                        ontap: () {
+                                          setState(() {
+                                            card = _cardController.text;
+                                          });
+                                        },
+                                        text: "add"),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(
+                        Icons.add,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    )
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(card,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.bold)),
+                    Spacer(),
+                    ChangeClickableText(onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(40.0),
+                            child: Wrap(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextFormField(
+                                      controller: _cardController,
+                                      onEditingComplete: () {},
+                                      textInputAction: TextInputAction.next,
+                                      validator: (val) => val!.isEmpty
+                                          ? 'Please enter your card'
+                                          : null,
+                                      decoration: const InputDecoration(
+                                        labelText: "Card",
+                                      )),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: MainButton(
+                                      ontap: () {
+                                        setState(() {
+                                          card = _cardController.text;
+                                        });
+                                      },
+                                      text: "add"),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    }),
+                  ],
+                ),
         ),
       ),
     );
@@ -241,8 +378,19 @@ class TitleAndValue extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [Text(title,style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.grey[700],)),
-        Text(value,style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),)],
+      children: [
+        Text(title,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Colors.grey[700],
+                )),
+        Text(
+          value,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(fontWeight: FontWeight.bold),
+        )
+      ],
     );
   }
 }

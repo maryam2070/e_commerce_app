@@ -17,6 +17,7 @@ Route<dynamic> onGenerate(RouteSettings st) {
     case AppRoutes.signupRoute:
       return CupertinoPageRoute(
           builder: (_) => const SignUpPage(), settings: st);
+
     case AppRoutes.forgotPasswordRoute:
       return CupertinoPageRoute(
           builder: (_) => const ForgotPasswordPage(), settings: st);
