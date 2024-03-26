@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
                   borderSide: BorderSide(color: Colors.red))),
         ),
         onGenerateRoute: onGenerate,
-        initialRoute: AppRoutes.navRoute,
+        initialRoute: AppRoutes.loginRoute,
       ),
     );
   }

@@ -30,8 +30,6 @@ class _LoginPageState extends State<LoginPage> {
     final _emailFocusNode = FocusNode();
     final _passwordFocusNode = FocusNode();
 
-    _emailController.text = "maryamamr2070@gmail.com";
-    _passwordController.text = "123456789";
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

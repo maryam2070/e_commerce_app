@@ -12,7 +12,6 @@ class ForgotPasswordPage extends StatelessWidget {
     final _emailController=TextEditingController();
     final _key=GlobalKey<FormState>();
     final size=MediaQuery.of(context).size;
-    _emailController.text="maryamamr2070@gmail.com";
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(

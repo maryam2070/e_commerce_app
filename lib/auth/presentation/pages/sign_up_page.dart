@@ -31,9 +31,6 @@ class _SignUpPageState extends State<SignUpPage> {
     final _emailFocusNode = FocusNode();
     final _passwordFocusNode = FocusNode();
     final _nameFocusNode = FocusNode();
-    _nameController.text = "maryam";
-    _emailController.text = "maryamamr2070@gmail.com";
-    _passwordController.text = "123456789";
     return BlocBuilder<AuthControllerBloc, AuthControllerState>(
       builder: (context, state) {
         if (state is AuthControllerSuccess) {
