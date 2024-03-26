@@ -1,16 +1,45 @@
-# e_commerce_app
+# e-commerce-app (Online Store)
+online application provides online shopping experience to users
 
-A new Flutter project.
+## Features
 
-## Getting Started
+- Auth
+    - sign in
+    - sign up
+    - sign out
+    - set password via email
+- Product
+    - show product categories (new,sale)
+- Cart
+    - add product to cart
+    - remove from cart
+    - check out
+ 
+- Order
+    - make order
+    - cancel order
+    - display order data
+    - add shipping address and payment data 
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies 
+- Dart
+- clean archeticture 
+- firebase 
+- flutter_bloc
+- equatable 
+- get_it for dependency injection 
+- fluttertoast
+- flutter_rating_bar
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+    
+## 🔗 Links
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/maryam-amr-943a10201/)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Screenshots
+
+
+![Green Gradient Application Showcase Presentation (2)](https://github.com/maryam2070/e_commerce_app/assets/75796502/c826e42d-199e-4d6c-8f2f-a7fce5ba323d)
+![Green Gradient Application Showcase Presentation](https://github.com/maryam2070/e_commerce_app/assets/75796502/7dc7d195-5cd3-4685-a7a5-b01212defdb4)
+![Green Gradient Application Showcase Presentation (1)](https://github.com/maryam2070/e_commerce_app/assets/75796502/55df5062-f339-4914-988b-fdf53a91fddd)
